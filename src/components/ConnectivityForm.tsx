@@ -82,7 +82,7 @@ const ConnectivityForm: React.FC<ConnectivityFormProps> = ({
 	};
 
 	return (
-		<div className="my-4 max-w-5xl px-8 shadow-lg">
+		<div className="my-4 max-w-5xl px-8 shadow-lg py-2">
 			{connectivityItems.map((item, index) => (
 				<div key={index} className="grid grid-cols-2 gap-4 mb-4">
 					<div className="w-full space-y-2">
