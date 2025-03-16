@@ -27,16 +27,14 @@ const LocationPicker: React.FC<Props> = ({ location, handleChangeLocation }) => 
 	};
 
 	return (
-			<MapPicker
-				defaultLocation={location}
-				zoom={zoom}
-				mapTypeId="roadmap"
-				style={{ height: "400px", width: "100%" }}
-				onChangeLocation={handleChangeLocation}
-				onChangeZoom={handleChangeZoom}
-				apiKey="YOUR_GOOGLE_MAPS_API_KEY"
-			/>
-		
+		<MapPicker
+			defaultLocation={location}
+			zoom={zoom}
+			style={{ height: "400px", width: "100%" }}
+			onChangeLocation={handleChangeLocation}
+			onChangeZoom={handleChangeZoom}
+			apiKey="YOUR_GOOGLE_MAPS_API_KEY"
+		/>
 	);
 };
 
