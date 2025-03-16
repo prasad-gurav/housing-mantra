@@ -30,8 +30,6 @@ export const LocationPickerModal: React.FC<LocationPickerProps> = ({
 }) => {
 	// const [location, setLocation] = useState(DEFAULT_LOCATION);
 
-
-	
 	const handleConfirm = () => {
 		handleChangeLocation(location.lat, location.lng);
 		onClose();
@@ -44,7 +42,10 @@ export const LocationPickerModal: React.FC<LocationPickerProps> = ({
 					<DialogTitle>Pick a Location</DialogTitle>
 				</DialogHeader>
 
-				<LocationPicker location={location} handleChangeLocation={handleChangeLocation} />
+				<LocationPicker
+					location={location}
+					handleChangeLocation={handleChangeLocation}
+				/>
 
 				<Button onClick={handleConfirm} className="mt-4 w-full bg-primary">
 					Confirm Location
