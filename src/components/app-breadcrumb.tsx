@@ -12,7 +12,7 @@ export default function AppBreadcrumb() {
 		<Breadcrumb className="p-8">
 			<BreadcrumbList>
 				<BreadcrumbItem>
-					<BreadcrumbLink href="/">Home</BreadcrumbLink>
+					<BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
 				</BreadcrumbItem>
 				<BreadcrumbSeparator />
 				<BreadcrumbItem>

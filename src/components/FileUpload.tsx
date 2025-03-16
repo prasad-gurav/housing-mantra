@@ -14,10 +14,19 @@ import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Switch } from "./ui/switch";
 
-export function FileUpload() {
-	const [images, setImages] = useState<
-		{ src: string; description: string; isPrimary: boolean }[]
-	>([]);
+interface FileUploadProps {
+	images: { src: string; description: string; isPrimary: boolean }[];
+	setImages: React.Dispatch<
+		React.SetStateAction<
+			{ src: string; description: string; isPrimary: boolean }[]
+		>
+	>;
+}
+
+const FileUpload: React.FC<FileUploadProps> = ({ images, setImages }) => {
+	// const [images, setImages] = useState<
+	// 	{ src: string; description: string; isPrimary: boolean }[]
+	// >([]);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +62,6 @@ export function FileUpload() {
 	};
 
 	const handleSetPrimary = (index: number) => {
-		console.log(index)
 		setImages((prev) =>
 			prev.map((img, i) => ({ ...img, isPrimary: i === index }))
 		);
@@ -64,7 +72,7 @@ export function FileUpload() {
 	};
 
 	return (
-		<div className="px-8 min-h-56">
+		<div className="px-8 min-h-56 ">
 			<h2 className="text-xl font-semibold text-rose-500 mb-2">Images</h2>
 			<div
 				className="border-2 border-dashed rounded-lg p-12 text-center cursor-pointer max-w-5xl"
@@ -94,7 +102,7 @@ export function FileUpload() {
 									onClick={() => handleRemoveImage(index)}
 									className="absolute top-2 right-2  text-white p-1 rounded-full"
 								>
-									<Trash size={16} className="text-rose-500" />
+									<Trash size={16} />
 								</Button>
 								<CardHeader>
 									<CardTitle>Preview</CardTitle>
@@ -127,7 +135,7 @@ export function FileUpload() {
 											onCheckedChange={() => handleSetPrimary(index)}
 											className={`transition-all ${
 												image.isPrimary ? "bg-rose-500" : "bg-gray-300"
-											  }`}
+											}`}
 										/>
 									</div>
 								</CardFooter>
@@ -139,6 +147,6 @@ export function FileUpload() {
 			<p className="text-rose-500 my-4">Add at least one media</p>
 		</div>
 	);
-}
+};
 
 export default FileUpload;

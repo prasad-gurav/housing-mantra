@@ -4,8 +4,17 @@ import { Progress } from "./ui/progress";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 
+interface UpdateAmenitiesFormProps {
+	selectedAmenities: string[];
+	setSelectedAmenities: React.Dispatch<React.SetStateAction<string[]>>;
+	progressPercentage: number;
+}
 
-export function UpdateAmenitiesForm() {
+const UpdateAmenitiesForm: React.FC<UpdateAmenitiesFormProps> = ({
+	selectedAmenities,
+	setSelectedAmenities,
+	progressPercentage,
+}) => {
 	const amenities = [
 		"School in vicinity",
 		"Adjoining Metro Station",
@@ -37,9 +46,8 @@ export function UpdateAmenitiesForm() {
 		"Females Only",
 	];
 
-	const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+	// const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
-	
 	const toggleAmenity = (amenity: string) => {
 		setSelectedAmenities((prev) =>
 			prev.includes(amenity)
@@ -48,41 +56,39 @@ export function UpdateAmenitiesForm() {
 		);
 	};
 
-
 	const toggleAllAmenities = () => {
 		if (selectedAmenities.length === amenities.length) {
-			setSelectedAmenities([]); 
+			setSelectedAmenities([]);
 		} else {
-			setSelectedAmenities([...amenities]); 
+			setSelectedAmenities([...amenities]);
 		}
 	};
 
 	return (
 		<div className="p-4 px-8 max-w-5xl">
-			
 			<div className="flex justify-between items-center mb-4">
 				<h2 className="text-4xl font-semibold">Update Amenities</h2>
 			</div>
 			<p className="my-4">
 				Fill out the amenities below about this new project
 			</p>
-			
+
 			<Progress
-				value={(selectedAmenities.length / amenities.length) * 100}
+				value={progressPercentage}
 				className="mb-4 bg-rose-50 [&>div]:bg-rose-500"
 			/>
 			<div className="flex items-center justify-between my-4">
-			<h2 className="text-2xl font-bold">Amenities</h2>
-			<Button
-				onClick={toggleAllAmenities}
-				className="bg-rose-500 text-white hover:bg-rose-600 transition"
-			>
-				{selectedAmenities.length === amenities.length
-					? "Unselect All"
-					: "Select All"}
-			</Button>
+				<h2 className="text-2xl font-bold">Amenities</h2>
+				<Button
+					onClick={toggleAllAmenities}
+					className="bg-rose-500 text-white hover:bg-rose-600 transition"
+				>
+					{selectedAmenities.length === amenities.length
+						? "Unselect All"
+						: "Select All"}
+				</Button>
 			</div>
-		
+
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-3">
 				{amenities.map((amenity) => (
 					<label
@@ -100,6 +106,6 @@ export function UpdateAmenitiesForm() {
 			</div>
 		</div>
 	);
-}
+};
 
 export default UpdateAmenitiesForm;

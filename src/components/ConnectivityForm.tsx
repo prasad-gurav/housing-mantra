@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin } from "lucide-react";
+import { MapPin, CirclePlus } from "lucide-react";
 import { LocationPickerModal } from "@/components/LocationPickerModal";
 import {
 	Select,
@@ -24,28 +24,53 @@ const landmarks = [
 	"Bus Stop",
 	"Metro Station",
 ];
-import { CirclePlus } from "lucide-react";
 
 const DefaultLocation = { lat: 10, lng: 106 };
-export function ConnectivityForm() {
-	const [connectivityItems, setConnectivityItems] = useState([
-		{
-			landmark: "",
-			distance: "",
-			description: "",
-			latitude: "",
-			longitude: "",
-		},
-	]);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+
+interface ConnectivityItem {
+	landmark: string;
+	distance: string;
+	description: string;
+	latitude: string;
+	longitude: string;
+}
+
+interface ConnectivityFormProps {
+	connectivityItems: ConnectivityItem[];
+	setConnectivityItems: React.Dispatch<
+		React.SetStateAction<ConnectivityItem[]>
+	>;
+}
+
+const ConnectivityForm: React.FC<ConnectivityFormProps> = ({
+	connectivityItems,
+	setConnectivityItems,
+}) => {
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-	const [location, setLocation] = useState(DefaultLocation);
+	const [location, setLocation] = useState<{ lat: number; lng: number }>(
+		DefaultLocation
+	);
 
 	const handleChangeLocation = (lat: number, lng: number) => {
 		setLocation({ lat, lng });
+
+		if (currentIndex !== null) {
+			setConnectivityItems((prev) =>
+				prev.map((item, i) =>
+					i === currentIndex
+						? { ...item, latitude: lat.toString(), longitude: lng.toString() }
+						: item
+				)
+			);
+		}
 	};
 
-	const handleChange = (index: number, field: string, value: string) => {
+	const handleConnectivityChange = <K extends keyof ConnectivityItem>(
+		index: number,
+		field: K,
+		value: ConnectivityItem[K]
+	) => {
 		setConnectivityItems((prev) =>
 			prev.map((item, i) => (i === index ? { ...item, [field]: value } : item))
 		);
@@ -57,13 +82,16 @@ export function ConnectivityForm() {
 	};
 
 	return (
-		<div className="my-4 max-w-5xl px-8">
+		<div className="my-4 max-w-5xl px-8 shadow-lg">
 			{connectivityItems.map((item, index) => (
 				<div key={index} className="grid grid-cols-2 gap-4 mb-4">
 					<div className="w-full space-y-2">
 						<Label>Landmark</Label>
 						<Select
-							onValueChange={(value) => handleChange(index, "landmark", value)}
+							value={item.landmark}
+							onValueChange={(value) =>
+								handleConnectivityChange(index, "landmark", value)
+							}
 						>
 							<SelectTrigger className="w-full">
 								<SelectValue placeholder="Select a landmark" />
@@ -82,7 +110,9 @@ export function ConnectivityForm() {
 						<Input
 							type="number"
 							value={item.distance}
-							onChange={(e) => handleChange(index, "distance", e.target.value)}
+							onChange={(e) =>
+								handleConnectivityChange(index, "distance", e.target.value)
+							}
 							placeholder="Enter distance"
 						/>
 					</div>
@@ -92,13 +122,13 @@ export function ConnectivityForm() {
 							value={item.description}
 							className="h-48"
 							onChange={(e) =>
-								handleChange(index, "description", e.target.value)
+								handleConnectivityChange(index, "description", e.target.value)
 							}
 							placeholder="Add details"
 						/>
 					</div>
 					<div className="flex items-center flex-wrap w-5xl gap-2">
-						<div className="space-y-2 w-[44%]">
+						<div className="space-y-2 w-[40%]">
 							<Label>Latitude</Label>
 							<Input
 								type="text"
@@ -107,7 +137,7 @@ export function ConnectivityForm() {
 								placeholder="Latitude"
 							/>
 						</div>
-						<div className="space-y-2 w-[44%]">
+						<div className="space-y-2 w-[40%]">
 							<Label>Longitude</Label>
 							<Input
 								type="text"
@@ -135,6 +165,7 @@ export function ConnectivityForm() {
 				onClose={() => setIsModalOpen(false)}
 				handleChangeLocation={handleChangeLocation}
 			/>
+
 			<div>
 				<Button className="flex items-center ">
 					<CirclePlus /> Add connectivity item
@@ -146,4 +177,6 @@ export function ConnectivityForm() {
 			</div>
 		</div>
 	);
-}
+};
+
+export default ConnectivityForm;
